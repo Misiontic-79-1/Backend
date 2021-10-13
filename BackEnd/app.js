@@ -39,6 +39,11 @@ app.use(history());
 app.use(express.static(path.join(__dirname, 'public'))); 
 
 
+
+
+
+
+
 // puertos
 
 app.set( "puerto",process.env.PORT || 3000 );

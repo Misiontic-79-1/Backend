@@ -4,6 +4,7 @@ const router = express.Router();
 import users from "../models/users";
 import adminusuarios from "../models/adminusuarios";
 import reservas from "../models/reservas";
+import Parqueadero from "../models/parqueadero";
 
 
 // agregar Adminusuario post
@@ -255,6 +256,145 @@ router.put('/users/:id', async (req, res) => {
       mensaje: 'Ocurrio un error',
       error
     })
+  }
+});
+
+
+//Crud Parqueadero //
+
+router.post('/nuevo-parqueadero', async (req, res) => {
+  const body = req.body;
+  try {
+      const parqueaderoDb = await Parqueadero.create(body);
+      res.status(200).json(parqueaderoDb);
+  } catch (error) {
+      return res.status(500).json({
+          mensaje: 'Ocurrio un error;',
+          error
+      })
+  }
+});
+
+// Get con parámetros
+router.get('/parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const parqueaderoDb = await Parqueadero.findOne({ _id });
+      res.json(parqueaderoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+
+  }
+});
+
+// Get con todos los documentos
+router.get('/consultar-parqueadero', async (req, res) => {
+  try {
+      const parqueaderoDb = await Parqueadero.find();
+      res.json(parqueaderoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Delete eliminar un parqueadero
+router.delete('/parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const parqueaderoDb = await Parqueadero.findByIdAndDelete({ _id });
+      if (!parqueaderoDb) {
+          return res.status(400).json({
+              mensaje: 'No se encontró el id indicado',
+              error
+          })
+      }
+      res.json(parqueaderoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Put actualizar un parqueadero
+router.put('/actualizar-parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+  try {
+      const parqueaderoDb = await Parqueadero.findByIdAndUpdate(
+
+          _id,
+          body,
+          { new: true });
+      res.json(parqueaderoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+
+//Celdas
+
+
+router.post('/agregar-celda', (req, res) => {
+  if (req.body._id) {
+
+      parqueadero.updateMany({ _id: req.body._id }, {
+          $push: {
+              'celda_carros': {
+                  numero_celda: req.body.numero_celda,
+                  descripcion: req.body.descripcion
+              }
+          }
+      },
+          (error) => {
+              if (error) {
+                  return res.json({
+                      success: false,
+                      msj: 'No se pudo agregar el teléfono',
+                      err
+                  });
+              } else {
+                  return res.json({
+                      success: true,
+                      msj: 'Se agregó correctamente el teléfono'
+                  });
+              }
+          }
+      )
+  } else {
+      return res.json({
+          success: false,
+          msj: 'No se pudo agregar el teléfono, por favor verifique que el _id sea correcto'
+      });
+  }
+});
+
+
+
+
+//crear celda parquedero
+
+router.post('/nueva-celda-carro', async (req, res) => {
+  const body = req.body;
+  try {
+      const parqueaderoDb = await celdasCarros.create(body);
+      res.status(200).json(parqueaderoDb);
+  } catch (error) {
+      return res.status(500).json({
+          mensaje: 'Ocurrio un error;',
+          error
+      })
   }
 });
 
