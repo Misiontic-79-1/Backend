@@ -3,11 +3,12 @@ const schema=mongoose.Schema;
 
 const reservasschema=new schema({
 
-    usuario:String,
-    placa: String,
-    date:String,
-    celular: String
-
+    placa:String,
+    cedula: String,
+    celular:String,
+    fecha:String,
+    horaInicio:String,
+    horaFin:String
 });
 
 
