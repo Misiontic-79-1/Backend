@@ -5,6 +5,9 @@ import users from "../models/users";
 import adminusuarios from "../models/adminusuarios";
 import reservas from "../models/reservas";
 import Parqueadero from "../models/parqueadero";
+import celdasMoto from "../models/celdas_moto";
+import celdasCarro from "../models/celdas_carro";
+
 
 
 // agregar Adminusuario post
@@ -343,7 +346,7 @@ router.put('/actualizar-parqueadero/:id', async (req, res) => {
 });
 
 
-//Celdas
+//Agregar Celdas subdocumento
 
 
 router.post('/agregar-celda', (req, res) => {
@@ -383,16 +386,185 @@ router.post('/agregar-celda', (req, res) => {
 
 
 
-//crear celda parquedero
+//Crud celdasMoto //
+
+router.post('/nueva-celda-moto', async (req, res) => {
+  const body = req.body;
+  try {
+      const celdasMotoDb = await celdasMoto.create(body);
+      res.status(200).json(celdasMotoDb);
+  } catch (error) {
+      return res.status(500).json({
+          mensaje: 'Ocurrio un error;',
+          error
+      })
+  }
+});
+
+// Get con parámetros
+router.get('/celda-moto/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const celdasMotoDb = await celdasMoto.findOne({ _id });
+      res.json(celdasMotoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+
+  }
+});
+
+// Get con todos los documentos
+router.get('/celda-motos', async (req, res) => {
+  try {
+      const celdasMotoDb = await celdasMoto.find();
+      res.json(celdasMotoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Delete eliminar un parqueadero
+router.delete('/celda-moto/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const celdasMotoDb = await celdasMoto.findByIdAndDelete({ _id });
+      if (!celdasMotoDb) {
+          return res.status(400).json({
+              mensaje: 'No se encontró el id indicado',
+              error
+          })
+      }
+      res.json(celdasMotoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Put actualizar un parqueadero
+router.put('/celda-moto/:id', async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+  try {
+      const celdasMotoDb = await celdasMoto.findByIdAndUpdate(
+
+          _id,
+          body,
+          { new: true });
+      res.json(celdasMotoDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+//Crud celdasCarro //
 
 router.post('/nueva-celda-carro', async (req, res) => {
   const body = req.body;
   try {
-      const parqueaderoDb = await celdasCarros.create(body);
-      res.status(200).json(parqueaderoDb);
+      const celdasCarroDb = await celdasCarro.create(body);
+      res.status(200).json(celdasCarroDb);
   } catch (error) {
       return res.status(500).json({
           mensaje: 'Ocurrio un error;',
+          error
+      })
+  }
+});
+
+// Get con parámetros
+router.get('/celda-carro/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const celdasCarroDb = await celdasCarro.findOne({ _id });
+      res.json(celdasCarroDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+
+  }
+});
+
+// Get con todos los documentos
+router.get('/celda-carros', async (req, res) => {
+  
+  try {
+    
+      const celdasCarroDb = await celdasCarro.find();
+      res.json(celdasCarroDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Get con todos los documentos
+router.get("/total-celdas-carros", function (req, res) {
+  celdasCarro.find({}, function (err, celdas_carros) {
+    Parqueadero.populate(celdas_carros, { path: "parqueadero" }, function (err, celdas_carros) {
+      res.status(200).send(celdas_carros);
+    });
+  });
+});
+
+// Get con todos los documentos
+router.get("/total-celdas-carros2", function (req, res) {
+  Parqueadero.find({}, function (err, parqueaderos) {
+    celdasCarro.populate(parqueaderos, { path: "celdas_carro" }, function (err, parqueaderos) {
+      res.status(200).send(parqueaderos);
+    });
+  });
+});
+
+// Delete eliminar un parqueadero
+router.delete('/celda-carro/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+      const celdasCarroDb = await celdasCarro.findByIdAndDelete({ _id });
+      if (!celdasCarroDb) {
+          return res.status(400).json({
+              mensaje: 'No se encontró el id indicado',
+              error
+          })
+      }
+      res.json(celdasCarroDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
+          error
+      })
+  }
+});
+
+// Put actualizar un parqueadero
+router.put('/celda-carro/:id', async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+  try {
+      const celdasCarroDb = await celdasCarro.findByIdAndUpdate(
+
+          _id,
+          body,
+          { new: true });
+      res.json(celdasCarroDb);
+  } catch (error) {
+      return res.status(400).json({
+          mensaje: 'Ocurrio un error',
           error
       })
   }

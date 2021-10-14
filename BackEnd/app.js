@@ -6,7 +6,6 @@ require ("dotenv").config();
 const app = express();
 
 // bases de datos
-
 const mongoose = require('mongoose');
 
 const uri =process.env.uri;
