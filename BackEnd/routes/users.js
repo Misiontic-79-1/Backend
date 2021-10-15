@@ -1,10 +1,95 @@
-import express from "express";
+const express=require("express");
 const router = express.Router();
 
-import users from "../models/users";
-import adminusuarios from "../models/adminusuarios";
-import reservas from "../models/reservas";
+const users=require("../models/users");
+const adminusuarios=require("../models/adminusuarios");
+const reservas=require("../models/reservas");
+const parqueadero=require("../models/parqueadero");
 
+
+// agregar parqueadero
+
+router.post("/parqueadero-nuevo", async (req, res) => {
+  const body = req.body;
+  try {
+    const parqueaderoDb = await parqueadero.create(body);
+    res.status(200).json(parqueaderoDb);
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: "ocurrio un error",
+      error
+    })
+  }
+});
+
+// Get con parametro parqueadero
+
+router.get('/parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const parqueaderoDb = await parqueadero.findOne({ _id });
+    res.json(parqueaderoDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
+// Get con todos los elementos parqueadero
+
+router.get('/parqueadero', async (req, res) => {
+  try {
+    const parqueaderoDb = await parqueadero.find();
+    res.json(parqueaderoDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
+// Delete una parqueadero
+
+router.delete('/parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  try {
+    const parqueaderoDb = await parqueadero.findByIdAndDelete({ _id });
+    if (!parqueaderoDb) {
+      return res.status(400).json({
+        mensaje: 'No se encontró el id indicado',
+        error
+      })
+    }
+    res.json(parqueaderoDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
+
+// Actualizar una parqueadero
+
+router.put('/parqueadero/:id', async (req, res) => {
+  const _id = req.params.id;
+  const body = req.body;
+  try {
+    const parqueaderoDb = await parqueadero.findByIdAndUpdate(
+      _id,
+      body,
+      { new: true });
+    res.json(parqueaderoDb);
+  } catch (error) {
+    return res.status(400).json({
+      mensaje: 'Ocurrio un error',
+      error
+    })
+  }
+});
 
 // agregar Adminusuario post
 

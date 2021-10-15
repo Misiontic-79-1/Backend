@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose=require("mongoose");
 const schema=mongoose.Schema;
 
 const reservasschema=new schema({
@@ -14,5 +14,4 @@ const reservasschema=new schema({
 
 // convertir a modelo
 
-const reservas = mongoose.model("reservas",reservasschema);
-export default reservas;
+module.exports = mongoose.model("reservas",reservasschema);

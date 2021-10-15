@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose=require("mongoose");
 const schema=mongoose.Schema;
 
 const usersschema=new schema({
@@ -14,5 +14,4 @@ const usersschema=new schema({
 
 // convertir a modelo
 
-const users = mongoose.model("users",usersschema);
-export default users;
+module.exports = mongoose.model("users",usersschema);
