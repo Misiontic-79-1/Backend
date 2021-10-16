@@ -1,17 +1,17 @@
-import mongoose from "mongoose";
+const mongoose=require("mongoose");
 const schema=mongoose.Schema;
 
 const reservasschema=new schema({
 
-    usuario:String,
-    placa: String,
-    date:String,
-    celular: String
-
+    placa:String,
+    cedula: String,
+    celular:String,
+    fecha:String,
+    horaInicio:String,
+    horaFin:String
 });
 
 
 // convertir a modelo
 
-const reservas = mongoose.model("reservas",reservasschema);
-export default reservas;
+module.exports = mongoose.model("reservas",reservasschema);

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose=require("mongoose");
 const schema=mongoose.Schema;
 
 const adminusuariosschema=new schema({
@@ -6,12 +6,11 @@ const adminusuariosschema=new schema({
     nombre:  String,
     usuario: String,
     password:String,
-    tipo: String
+    tipo: String,
 
 });
 
 
 // convertir a modelo
 
-const adminusuario = mongoose.model("adminusuario",adminusuariosschema);
-export default adminusuario;
+module.exports = mongoose.model("adminusuario",adminusuariosschema);

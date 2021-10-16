@@ -1,7 +1,7 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose=require("mongoose");
+const schema=mongoose.Schema;
 
-var parqueaderoSchema = new Schema({
+var parqueaderoschema = new schema({
     usuario:String,
     password:String,
     nombre_parqueadero:String,
@@ -16,9 +16,10 @@ var parqueaderoSchema = new Schema({
     activo: { type: Boolean, default: true },
     celdas_carro:Number,
     celdas_moto:Number,
+
 });
 
 //
 
 
-module.exports = mongoose.model("Parqueadero", parqueaderoSchema);
+module.exports = mongoose.model("parqueadero",parqueaderoschema);
